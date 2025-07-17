@@ -1,5 +1,6 @@
 from logging import Logger
 from pathlib import Path
+from sqlite3 import Connection
 
 import pandas as pd
 from datetime import datetime
@@ -8,7 +9,7 @@ from app.source import KagglehubSource, CsvReader
 
 
 class DbImporter:
-    def __init__(self, conn):
+    def __init__(self, conn: Connection):
         self.conn = conn
 
     def execute(self, df) -> int:
@@ -18,7 +19,7 @@ class DbImporter:
 
 
 class DbSearch:
-    def __init__(self, conn):
+    def __init__(self, conn: Connection):
         self.conn = conn
 
     def search(self, brand: str = None) -> pd.DataFrame:
@@ -47,7 +48,7 @@ class DailyImporter:
         self.file = Path("last_import_date.txt")
 
     def execute(self) -> int | None:
-        if not self.should_import_today():
+        if not self._should_import_today():
             self.logger.info("Skipping import.")
             return None
 
@@ -58,11 +59,11 @@ class DailyImporter:
         data = CsvReader(result).execute()
         rows = self.importer.execute(data)
 
-        self.set_last_import_date(datetime.now())
+        self._set_last_import_date(datetime.now())
 
         return rows
 
-    def get_last_import_date(self) -> datetime:
+    def _get_last_import_date(self) -> datetime:
         if not self.file.exists():
             return datetime.min
 
@@ -77,11 +78,11 @@ class DailyImporter:
             self.file.write_text(datetime.min.isoformat())
             return datetime.min
 
-    def set_last_import_date(self, date: datetime):
+    def _set_last_import_date(self, date: datetime):
         self.file.write_text(date.isoformat())
 
-    def should_import_today(self) -> bool:
-        last_import_date = self.get_last_import_date()
+    def _should_import_today(self) -> bool:
+        last_import_date = self._get_last_import_date()
         today = datetime.now().date()
 
         return last_import_date.date() < today

@@ -17,7 +17,8 @@ class KagglehubSource:
 
     def __call__(self) -> Path | None:
         try:
-            csv_path = kagglehub.dataset_download(handle="urvishahir/electric-vehicle-specifications-dataset-2025")
+            csv_path = kagglehub.dataset_download(
+                handle="urvishahir/electric-vehicle-specifications-dataset-2025")
             self.logger.info(f"Dataset downloaded to: {csv_path}")
         except KaggleApiHTTPError as e:
             self.logger.error(f"Error downloading dataset: {e}")

@@ -4,13 +4,15 @@ from textwrap import dedent
 from unittest.mock import Mock, patch
 
 import pandas as pd
+import pytest
 
 from app.source import KagglehubSource, CsvReader
 
 
 class TestKagglehubSource:
 
-    def test_download(self):
+    @pytest.mark.e2e
+    def test_real_download_behaviour(self):
         logger = Mock(spec=Logger)
 
         sut = KagglehubSource(logger)
@@ -25,7 +27,7 @@ class TestKagglehubSource:
         logger = Mock(spec=Logger)
 
         result_file = tmp_path / "data.csv"
-        result_file.touch()
+        result_file.write_text("hi socrates")
 
         with patch("kagglehub.dataset_download", return_value=tmp_path) as mock_fn:
             sut = KagglehubSource(logger)
@@ -33,12 +35,13 @@ class TestKagglehubSource:
             result = sut()
 
         # assert
-        # mock_fn.assert_called_once_with(handle="urvishahir/electric-vehicle-specifications-dataset-2025")
+        mock_fn.assert_called_once_with(handle="urvishahir/electric-vehicle-specifications-dataset-2025")
         mock_fn.assert_called_once()
 
         assert result is not None
         assert result.is_file()
         assert result == result_file
+        assert result.read_text() == "hi socrates"
 
 
 class TestCsvReader:
