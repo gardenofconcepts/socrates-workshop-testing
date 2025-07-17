@@ -18,8 +18,14 @@ dev = [
     "pytest-cov>=6.2.1",
     "freezegun>=1.5.3",
     "pytest-mock>=3.14.1",
+    "pytest-bdd>=8.1.0",
 ]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+markers = [
+    "e2e: Run e2e tests",
+]
