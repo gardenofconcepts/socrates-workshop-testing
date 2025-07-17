@@ -2,7 +2,7 @@ import logging
 import sqlite3
 
 from app.db import DbImporter, DbSearch, DailyImporter
-from app.source import KagglehubSource, CsvReader
+from app.source import KagglehubSource
 
 
 def main():
@@ -26,5 +26,5 @@ def main():
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.DEBUG)
     main()
