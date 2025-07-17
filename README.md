@@ -1,5 +1,9 @@
 # ScCraTest Workshop - Testing
 
+> [!WARNING]
+> The implementation and tests in this repository are prepared for a training session, in which the crowd tries to
+> improve both. This raw variant contains many deliberate drawbacks and mis-implementations.
+
 ## Sample Project
 
 This project fetches a list of electric vehicles from an online source and provides functionality to query and filter
