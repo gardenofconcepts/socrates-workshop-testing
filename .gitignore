@@ -285,5 +285,6 @@ fabric.properties
 
 
 
-/kaggle.json
-/ev_specifications.db
+kaggle.json
+*.db
+last_import_date.txt
